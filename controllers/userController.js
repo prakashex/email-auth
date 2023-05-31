@@ -1,7 +1,30 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../models/user")
-// const User = require("../models/user")
 const jwt = require("jsonwebtoken")
+const dotenv = require("dotenv").config()
+const nodemailer = require("nodemailer")
+
+const transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: process.env.AUTH_EMAIL, // Replace with your Gmail email address
+      pass: process.env.AUTH_PASS // Replace with your Gmail password
+    }
+  });
+
+
+
+transporter.verify((error, success) => {
+    if(error){
+        console.log(error);
+    }else{
+        console.log("Ready for messages")
+        console.log("success value",success)
+    }
+})
+
+
+
 
 const registerUser = asyncHandler(async(req , res) => {
     const {email} = req.body;
@@ -20,8 +43,25 @@ const registerUser = asyncHandler(async(req , res) => {
         const otp = (Math.floor(Math.random() * 9000) + 1000)
         newUser.otps.push({otp})
         await newUser.save()
+
+        // email
+
+        const mailOptions = {
+            from: "whileforifelsedowhile@gmail.com",
+            to: email,
+            subject: "otp",
+            text: `here is your otp -- ${otp.toString()} `
+        }
+    
+        let info = await transporter.sendMail(mailOptions)
+        console.log("Message sent: %s", info.messageId);
+
+        // email
+
+
         return res.json({message: "user created and otp pushed"})
     }
+
 
 
     // user is already registered , now first check if he is requesting , the otp in between 1 minute
@@ -40,7 +80,25 @@ const registerUser = asyncHandler(async(req , res) => {
         user.otps.push({otp})
         user.lastRequest = Date.now()
         user.save() 
+
+        // email
+
+        const mailOptions = {
+            from: "whileforifelsedowhile@gmail.com",
+            to: email,
+            subject: "otp",
+            text: `here is your otp -- ${otp.toString()} `
+        }
+    
+    
+        let info = await transporter.sendMail(mailOptions)
+        console.log("Message sent: %s", info.messageId);
+
+
+
+        // email
         return res.json({message: "user already existed so otp was generated and pushed"})
+
     }
 
 })
