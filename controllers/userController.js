@@ -3,10 +3,6 @@ const User = require("../models/user")
 // const User = require("../models/user")
 
 
-
-
-
-
 const registerUser = asyncHandler(async(req , res) => {
     const {email} = req.body;
 
