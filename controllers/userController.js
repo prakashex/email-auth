@@ -109,11 +109,9 @@ const signin = asyncHandler(async(req , res) => {
             user.otps.splice(otpIndex,1)
             user.lastLoginRequest = Date.now()
             await user.save()
-            const token = jwt.sign({
-                user:{
-                    email
-                }
-            }, "secret", {expiresIn:"1h"})
+            const token = jwt.sign({user: {
+                email
+            }}, process.env.SECRET, {"expiresIn":"1h"})
             return res.json({message: "otp matched", bearerToken: token})
         }else{
             user.attempts += 1
