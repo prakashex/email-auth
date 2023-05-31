@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler")
 const User = require("../models/user")
 // const User = require("../models/user")
-
+const jwt = require("jsonwebtoken")
 
 const registerUser = asyncHandler(async(req , res) => {
     const {email} = req.body;
@@ -109,7 +109,12 @@ const signin = asyncHandler(async(req , res) => {
             user.otps.splice(otpIndex,1)
             user.lastLoginRequest = Date.now()
             await user.save()
-            return res.json({message: "otp matched"})
+            const token = jwt.sign({
+                user:{
+                    email
+                }
+            }, "secret", {expiresIn:"1h"})
+            return res.json({message: "otp matched", bearerToken: token})
         }else{
             user.attempts += 1
             user.lastLoginRequest = Date.now()
