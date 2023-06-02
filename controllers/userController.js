@@ -244,7 +244,13 @@ const listUser = asyncHandler(async (req , res) => {
 
     const user = await User.findOne({email});
 
+    if(!user){
+        res.status(404)
+        throw new Error("user not found")
+    }
+    
     console.log("user -->",user)
+
 
     res.json({message: "ok"})
 })
