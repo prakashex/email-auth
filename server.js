@@ -8,7 +8,6 @@ const app = express()
 
 connectDb("mongodb://127.0.0.1:27017/email-auth")
 
-// app.post("/", (req , res) => res.send("hello"))
 app.use(express.json())
 app.use("/api/user",router)
 app.use(errorHandler)

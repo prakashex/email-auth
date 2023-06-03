@@ -7,8 +7,8 @@ const nodemailer = require("nodemailer")
 const transporter = nodemailer.createTransport({
     service: 'Gmail',
     auth: {
-      user: process.env.AUTH_EMAIL, // Replace with your Gmail email address
-      pass: process.env.AUTH_PASS // Replace with your Gmail password
+      user: process.env.AUTH_EMAIL,
+      pass: process.env.AUTH_PASS 
     }
   });
 
@@ -191,53 +191,6 @@ const signin = asyncHandler(async(req , res) => {
 
 
 
-
-// const login = asyncHandler(async (req , res) => {
-//     const {email , otp} = req.body
-    
-//     if(!email || !otp){
-//         res.status(404)
-//         throw new Error("all fields are required")
-//     }
-
-//     const user = await User.findOne({email})
-
-//     if(!user){
-//         res.status(404)
-//         throw new Error("user not found")
-//     }
-//     // console.log("user --> ",user)
-
-//     // user.otps.map(data => {
-//     //     if(data.otp == otp){
-//     //         return res.json({message: "otp matched", data: otp})
-//     //     }
-//     // })
-
-//     // const matchedOtp = user.otps.find((userOtp => userOtp.otp === otp))
-
-//     // console.log("matched otp -->",matchedOtp)
-
-//     // if(matchedOtp){
-//     //    return res.json({message: "otp matched"})
-//     // }else{
-//     //    res.status(400)
-//     //    throw new Error("incorrect otp")
-//     // } 
-
-//     const matchedOtp = user.otps.find((userOtp) => console.log("find -->",userOtp));
-
-//     if (matchedOtp) {
-//       // OTP matches
-//       return res.json({ message: "OTP matched successfully" });
-//     } else {
-//       // OTP does not match
-//       res.status(400);
-//       throw new Error("OTP does not match");
-//     }
-
-//     // return res.json({message: "wrong otp"})
-// })
 
 const listUser = asyncHandler(async (req , res) => {
     const {email} = req.body;
