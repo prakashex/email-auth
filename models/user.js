@@ -15,7 +15,6 @@ const otpSchema = new mongoose.Schema({
 })
 
 
-
 const userSchema = new mongoose.Schema({
   email:{
     type: String,
@@ -40,8 +39,6 @@ const userSchema = new mongoose.Schema({
     default: 0
   }
 })
-
-
 
 const User = mongoose.model("User",userSchema);
 
